@@ -11,7 +11,8 @@ class App
     public function generateReport(Credit $credit, GeneratorInterface $generator): void
     {
         $calculator = new Calculator($credit);
-        $report = $generator->generateReport($calculator->calculateForPeriod());
+        $creditInfo = $calculator->calculateForPeriod();
+        $report = $generator->generateReport($creditInfo);
         echo $report;
     }
 }

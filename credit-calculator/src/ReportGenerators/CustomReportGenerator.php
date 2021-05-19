@@ -10,12 +10,13 @@ class CustomReportGenerator implements GeneratorInterface
 
         foreach ($creditInfo as $info) {
             $report .= sprintf("Платеж в месяц: %.2f \t Процентная часть %.2f \t Часть от ОД %.2f \t Остаток задолжности %.2f \n",
-                $info['monthlyPayment'],
-                $info['percentPart'],
-                $info['mainDebtPart'],
-                $info['debt'],
+                $info->monthlyPayment,
+                $info->percentPart,
+                $info->mainDebtPart,
+                $info->debt,
             );
         }
+
         return $report;
     }
 }

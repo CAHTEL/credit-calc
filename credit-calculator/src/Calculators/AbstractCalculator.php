@@ -3,6 +3,7 @@
 namespace App\Calculators;
 
 use App\Models\Credit;
+use App\Models\CreditInfo;
 
 abstract class AbstractCalculator
 {
@@ -37,15 +38,29 @@ abstract class AbstractCalculator
             $percentPart = $this->getPercentDebtPayment();
             $mainDebtPart = $this->getMainDebtPayment();
             $this->changeDebtForPeriod();
-            $result[] = [
-                'monthlyPayment' => round($monthlyPayment, 2),
-                'percentPart' => round($percentPart, 2),
-                'mainDebtPart' => round($mainDebtPart, 2),
-                'debt' => round($this->getCreditDebt(), 2),
-            ];
+            $result[] = new CreditInfo(
+                $monthlyPayment,
+                $percentPart,
+                $mainDebtPart,
+                $this->getCreditDebt()
+            );
             $this->credit->termPassed++;
         }
 
         return $result;
     }
+
+    public function calculateAllPercent(): float
+    {
+        $info = $this->calculateForPeriod();
+        $sum = 0;
+
+        foreach ($info as $monthCreditInfo)
+        {
+            $sum += $monthCreditInfo->percentPart;
+        }
+
+        return $sum;
+    }
+
 }
